@@ -26,5 +26,17 @@
         android:layout_height="wrap_content"
         android:text="Connect"/>
 
+    <Button
+        android:id="@+id/file_picker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Choose File"/>
+
+    <TextView
+        android:id="@+id/file_url"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="No File Choosen"/>
+
 </LinearLayout>
 
