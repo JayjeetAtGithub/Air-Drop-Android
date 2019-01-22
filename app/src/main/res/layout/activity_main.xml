@@ -7,30 +7,18 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <EditText
-        android:id="@+id/host"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Enter host address" />
-
-
-    <EditText
-        android:id="@+id/port"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Enter port" />
-
-    <Button
-        android:id="@+id/connect_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Connect"/>
-
     <Button
         android:id="@+id/file_picker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Choose File"/>
+        android:text="CHOOSE FILE"/>
+
+    <Button
+        android:id="@+id/scan_code"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="SCAN QR CODE"/>
+
 
     <TextView
         android:id="@+id/file_url"
