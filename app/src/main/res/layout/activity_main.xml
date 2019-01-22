@@ -7,23 +7,38 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="30px"
+        android:text="Hola ! Welcome"
+        android:textAlignment="center"
+        android:textColor="#311B72"
+        android:textSize="40px"/>
+
     <Button
         android:id="@+id/file_picker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#03A9F4"
+        android:layout_margin="10px"
         android:text="CHOOSE FILE"/>
 
     <Button
         android:id="@+id/scan_code"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="SCAN QR CODE"/>
+        android:background="#00E5FF"
+        android:layout_margin="10px"
+        android:text="SCAN QR CODE AND SEND"/>
 
 
     <TextView
         android:id="@+id/file_url"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColorHighlight="#757575"
+        android:layout_margin="10px"
         android:text="No File Choosen"/>
 
 </LinearLayout>
