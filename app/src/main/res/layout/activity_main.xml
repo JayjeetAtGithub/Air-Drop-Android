@@ -30,8 +30,17 @@
         android:layout_height="wrap_content"
         android:background="#00E5FF"
         android:layout_margin="10px"
-        android:text="SCAN QR CODE AND SEND"/>
+        android:text="SCAN QR CODE AND CONNECT"/>
 
+
+    <Button
+        android:id="@+id/send_file"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#96D5FF"
+        android:layout_margin="10px"
+        android:enabled="false"
+        android:text="SEND"/>
 
     <TextView
         android:id="@+id/file_url"

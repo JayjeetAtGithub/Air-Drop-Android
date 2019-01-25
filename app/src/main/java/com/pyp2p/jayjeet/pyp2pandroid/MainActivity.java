@@ -23,11 +23,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private static final int QR_CODE_SCANNER_REQUEST_CODE = 1;
     private static final int FILE_BROWSER_REQUEST_CODE = 2;
-
+    Socket socket = null;
     String serverHost;
     Integer serverPort;
     String filePath = null;
-    Button filePicker, scanQrCode;
+    Button filePicker, scanQrCode, sendFile;
     TextView fileUrl;
 
     @Override
@@ -37,10 +37,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         filePicker = findViewById(R.id.file_picker);
         scanQrCode = findViewById(R.id.scan_code);
+        sendFile = findViewById(R.id.send_file);
         fileUrl = findViewById(R.id.file_url);
 
         filePicker.setOnClickListener(this);
         scanQrCode.setOnClickListener(this);
+        sendFile.setOnClickListener(this);
     }
 
 
@@ -66,15 +68,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         } else if (requestCode == QR_CODE_SCANNER_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             if (resultData != null) {
-                String[] addr = resultData.getData().toString().split(":");
-                serverHost = addr[0];
-                serverPort = Integer.parseInt(addr[1]);
-                if (filePath != null) {
-                    Thread cThread = new Thread(new ServerThread());
-                    cThread.start();
-                } else {
-                    Toast.makeText(this, "No File Picked !", Toast.LENGTH_LONG).show();
+                String[] addr;
+                try {
+                    addr = resultData.getData().toString().split(":");
+                    serverHost = addr[0];
+                    serverPort = Integer.parseInt(addr[1]);
+                } catch (Exception e) {
+                    Toast.makeText(this, "Wrong QR Code was Scanned !", Toast.LENGTH_SHORT).show();
                 }
+                Thread conn_thread = new Thread(new ConnectionThread());
+                conn_thread.start();
             }
         }
     }
@@ -87,29 +90,48 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             performFileSearch();
         } else if (id == R.id.scan_code) {
             startActivityForResult(new Intent(this, BarcodeScanningActivity.class), QR_CODE_SCANNER_REQUEST_CODE);
+        } else if (id == R.id.send_file) {
+            if (filePath != null) {
+                Thread send_thread = new Thread(new SendingThread());
+                send_thread.start();
+            } else {
+                Toast.makeText(this, "No File Picked", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
-    // File Sending Logic
-    public class ServerThread implements Runnable {
+    public class ConnectionThread implements Runnable {
+
         @Override
         public void run() {
-            Socket socket = null;
             try {
                 socket = new Socket(serverHost, serverPort);
-            } catch (Exception e) {
                 MainActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(MainActivity.this, "Connection Failed ! Try Again", Toast.LENGTH_SHORT).show();
+                        sendFile.setEnabled(true);
+                        Toast.makeText(getApplicationContext(), "Connection Successfull !", Toast.LENGTH_SHORT).show();
                     }
                 });
-                return;
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                MainActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getApplicationContext(), "Connection Failed !", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
+        }
+    }
+
+    // Connection Establishment Logic
+    public class SendingThread implements Runnable {
+        @Override
+        public void run() {
 
             File file = new File(filePath);
-
-
             byte[] bytes = new byte[(int) file.length()];
             FileInputStream fis = null;
             try {
@@ -117,32 +139,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
+
             BufferedInputStream bis = new BufferedInputStream(fis);
+            OutputStream os;
             try {
                 bis.read(bytes, 0, bytes.length);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            OutputStream os = null;
-            try {
                 os = socket.getOutputStream();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            try {
                 os.write(bytes, 0, bytes.length);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            try {
                 os.flush();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            try {
                 socket.close();
             } catch (IOException e) {
                 e.printStackTrace();
+            } finally {
+                filePath = null;
+                MainActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        fileUrl.setText("No File Choosen");
+                        sendFile.setEnabled(false);
+                    }
+                });
             }
         }
     }
