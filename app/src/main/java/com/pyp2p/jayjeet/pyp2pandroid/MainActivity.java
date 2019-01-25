@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     serverHost = addr[0];
                     serverPort = Integer.parseInt(addr[1]);
                 } catch (Exception e) {
-                    Toast.makeText(this, "Wrong QR Code was Scanned !", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Wrong QR Code was Scanned !", Toast.LENGTH_SHORT).show();
                 }
                 Thread conn_thread = new Thread(new ConnectionThread());
                 conn_thread.start();
@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Thread send_thread = new Thread(new SendingThread());
                 send_thread.start();
             } else {
-                Toast.makeText(this, "No File Picked", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "No File Picked", Toast.LENGTH_SHORT).show();
             }
         }
     }
