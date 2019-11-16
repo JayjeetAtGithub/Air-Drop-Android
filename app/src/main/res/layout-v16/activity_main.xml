@@ -42,7 +42,6 @@
         android:background="#96D5FF"
         android:padding="10dp"
         android:layout_margin="10dp"
-        android:enabled="false"
         android:text="@string/send"/>
 
     <TextView
