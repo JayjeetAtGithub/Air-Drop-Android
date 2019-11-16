@@ -26,6 +26,13 @@
         android:padding="10dp"
         android:text="@string/scan_qr_code_and_connect"/>
 
+    <TextView
+        android:id="@+id/address_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Address"
+        android:textAlignment="center"/>
+
     <Button
         android:id="@+id/file_picker_button"
         android:layout_width="match_parent"

@@ -14,7 +14,6 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -26,8 +25,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final int FILE_BROWSER_REQUEST_CODE = 2;
     private static String filePath = null;
     private static String fileName = null;
-    private static Thread sendingThread = null;
-    private TextView fileUrlText;
+    private static String host = null;
+    private static Integer port = null;
+    private TextView fileUrlText, addressText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Button scanButton = findViewById(R.id.scan_button);
         Button sendButton = findViewById(R.id.send_button);
         fileUrlText = findViewById(R.id.file_url_text);
+        addressText = findViewById(R.id.address_text);
 
         filePickerButton.setOnClickListener(this);
         scanButton.setOnClickListener(this);
@@ -68,9 +69,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (resultData != null) {
                 try {
                     String[] addr = String.valueOf(resultData.getData()).split(":");
-                      sendingThread = new Thread(new SendingRunnable(
-                            String.valueOf(addr[0]),
-                            Integer.parseInt(addr[1])));
+                    host = String.valueOf(addr[0]);
+                    port = Integer.parseInt(addr[1]);
+                    addressText.setText(host + ":" + port.toString());
                 } catch (Exception e) {
                     Toast.makeText(
                             getApplicationContext(), "Wrong QR Code was Scanned !", Toast.LENGTH_SHORT).show();
@@ -90,8 +91,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     new Intent(this, BarcodeScanningActivity.class), QR_CODE_SCANNER_REQUEST_CODE);
         }
         else if (id == R.id.send_button) {
-            if (filePath != null) {
-                if (sendingThread != null) {
+            if (filePath != null && fileName != null) {
+                if (host != null && port != null) {
+                    Thread sendingThread = new Thread(new SendingRunnable(host, port));
                     sendingThread.start();
                 }
                 else {
@@ -109,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         private String serverHost;
         private Integer serverPort;
 
-        public SendingRunnable(String serverHost, Integer serverPort) {
+        private SendingRunnable(String serverHost, Integer serverPort) {
             this.serverHost = serverHost;
             this.serverPort = serverPort;
         }
@@ -163,3 +165,4 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 }
+
