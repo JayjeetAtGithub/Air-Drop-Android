@@ -1,6 +1,5 @@
 <resources>
-    <string name="app_name">Air Drop Android</string>
-    <string name="air_drop_android">Air Drop Android</string>
+    <string name="app_name">Fast Drop Android</string>
     <string name="scan_qr_code_and_connect">SCAN QR CODE AND CONNECT</string>
     <string name="choose_file">CHOOSE FILE</string>
     <string name="send">SEND</string>

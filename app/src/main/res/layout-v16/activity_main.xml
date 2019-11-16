@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:text="@string/air_drop_android"
+        android:text="@string/app_name"
         android:textAlignment="center"
         android:textColor="#311B72"
         android:fontFamily="monospace"
