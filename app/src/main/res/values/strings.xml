@@ -1,9 +1,8 @@
 <resources>
-    <string name="app_name">pyP2PAndroid</string>
-    <string name="choose_file">CHOOSE FILE</string>
+    <string name="app_name">Air Drop Android</string>
+    <string name="air_drop_android">Air Drop Android</string>
     <string name="scan_qr_code_and_connect">SCAN QR CODE AND CONNECT</string>
+    <string name="choose_file">CHOOSE FILE</string>
     <string name="send">SEND</string>
     <string name="no_file_choosen">No File Choosen</string>
-    <string name="air_drop_for_android">Air Drop for Android</string>
-    <string name="developed_by_jc">Developed by Jayjeet Chakraborty</string>
 </resources>
