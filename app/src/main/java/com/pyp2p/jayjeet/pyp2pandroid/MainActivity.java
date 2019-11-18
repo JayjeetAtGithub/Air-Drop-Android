@@ -13,7 +13,6 @@ import android.widget.Toast;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -123,25 +122,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 PrintWriter writer = new PrintWriter(socket.getOutputStream());
                 writer.println(fileName);
                 writer.flush();
-                writer.close();
-                socket.close();
-                Thread.sleep(5000);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            File file = new File(filePath);
-            byte[] bytes = new byte[(int) file.length()];
-            FileInputStream fis = null;
-            try {
-                fis = new FileInputStream(file);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-            BufferedInputStream bis = new BufferedInputStream(fis);
-            OutputStream os;
-            try {
-                Socket socket = new Socket(this.serverHost, this.serverPort);
+                File file = new File(filePath);
+                byte[] bytes = new byte[(int) file.length()];
+                FileInputStream fis = new FileInputStream(file);
+                BufferedInputStream bis = new BufferedInputStream(fis);
+                OutputStream os;
                 bis.read(bytes, 0, bytes.length);
                 os = socket.getOutputStream();
                 os.write(bytes, 0, bytes.length);
@@ -165,4 +150,3 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 }
-
